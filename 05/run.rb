@@ -1,11 +1,12 @@
 #!/usr/bin/env ruby
 
-def findit( str, bounds, low, high ) 
+def find_it( str, bounds, low, high ) 
   str.each_char do |c|
+    middle = bounds[0] + ( bounds[1] - bounds[0] ) / 2
     if c == low
-        bounds = [ bounds[0], bounds[0] + ( bounds[1] - bounds[0] )/2 ]
+        bounds = [ bounds[0], middle ]
     else
-	bounds = [ bounds[0] + ( bounds[1] - bounds[0] )/2 + 1 , bounds[1] ]
+	bounds = [ middle + 1 , bounds[1] ]
     end
   end
   bounds[0]
@@ -13,8 +14,9 @@ end
 
 seats = []
 ARGF.each_line do |line|
-  row = findit( line.chomp[0,7], [0,127], 'F', 'B' )
-  column = findit( line.chomp[7,3], [0,7], 'L' ,'R'  )
+  pass = line.chomp
+  row = find_it( pass[0..6], [0,127], 'F', 'B' )
+  column = find_it( pass[7..9], [0,7], 'L' ,'R'  )
   seats << row * 8 + column
 end
 
