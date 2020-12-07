@@ -15,8 +15,8 @@ def part2( all_rules, target )
   count = 0
   all_rules[target].each do |child|
     count = count + child[:count] + child[:count] * part2( all_rules, child[:color] )
- end
- count
+  end
+  count
 end 
 
 
