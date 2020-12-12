@@ -39,6 +39,66 @@ class Point
 end
 
 
+class Cursor
+
+  attr_reader :location
+
+  def initialize( args )
+    @heading = args[:heading]
+    @location = Point.new( args[:x] || 0, args[:y] || 0 )
+  end
+
+  def move( args )
+    case args[:direction]
+      when 'N'
+        @location.y += args[:by]
+      when 'S'
+        @location.y -= args[:by]
+      when 'W'
+         @location.x -= args[:by]
+      when 'E'
+        @location.x += args[:by]
+      end
+  end
+
+  def turn( args )
+    turns = %w[N E S W]
+    case args[:direction]
+      when 'L'
+        @heading = turns[ turns.index( @heading ) - 1 ]
+      when 'R'
+        @heading = turns[ ( turns.index( @heading ) + 1 ) % turns.count ]
+    end
+  end
+
+  def forward( args )
+    factor = { 'N' => 1, 'S' => -1, 'E' => 1, 'W' => -1}
+    case @heading
+      when 'N','S' 
+        @location.y += args[:by] * factor[@heading]
+      when 'E','W'
+        @location.x += args[:by] * factor[@heading]
+    end
+  end
+
+  def rotate( args )
+    case args[:direction]
+      when 'L'
+        tmp = @location.dup
+        @location.x = -tmp.y
+        @location.y = tmp.x
+      when 'R'
+        tmp = @location.dup
+        @location.x = tmp.y
+        @location.y = -tmp.x
+    end
+  end
+
+end
+  
+
+
+
 class Grid
 
   include Enumerable 
