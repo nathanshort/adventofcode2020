@@ -3,8 +3,7 @@ class Point
   attr_accessor :x, :y
   
   def initialize( x, y )
-    @x = x
-    @y = y
+    @x, @y = x, y
   end
   
   def ==(other)
@@ -18,21 +17,21 @@ class Point
   end  
 
   def <=>( other )
-    ysort = ( y <=> other.y )
-    xsort = ( x <=> other.x )
+    ysort = ( @y <=> other.y )
+    xsort = ( @x <=> other.x )
     ysort != 0 ? ysort : xsort 
   end
 
   def adjacent() 
     @adj ||= 
-    [ Point.new( self.x - 1, self.y ),
-      Point.new( self.x - 1, self.y - 1 ),
-      Point.new( self.x, self.y - 1 ),
-      Point.new( self.x + 1, self.y - 1 ),
-      Point.new( self.x + 1, self.y ),
-      Point.new( self.x + 1, self.y + 1 ),
-      Point.new( self.x, self.y + 1 ),
-      Point.new( self.x - 1, self.y + 1 )
+    [ Point.new( @x - 1, @y ),
+      Point.new( @x - 1, @y - 1 ),
+      Point.new( @x, @y - 1 ),
+      Point.new( @x + 1, @y - 1 ),
+      Point.new( @x + 1, @y ),
+      Point.new( @x + 1, @y + 1 ),
+      Point.new( @x, @y + 1 ),
+      Point.new( @x - 1, @y + 1 )
     ]
     @adj
    end
@@ -76,7 +75,7 @@ class Grid
 
   def show
    (0..(height - 1) ).each do |y|
-     (0..(width-1) ).each do |x| 
+     (0..(width - 1) ).each do |x| 
        print @points[Point.new(x,y)]
      end
      print "\n"
