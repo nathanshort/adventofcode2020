@@ -1,3 +1,49 @@
+
+class PointNd
+
+  attr_reader :components
+
+  def initialize( components )
+    @components = components
+  end
+
+  def ==(other)
+    @components == other.components
+  end
+
+  alias eql? ==
+      
+  def hash
+    hash = nil
+    components.each do |c|
+      hash = ( hash ? hash ^ c.hash : c.hash )
+    end
+    hash
+  end  
+
+  def adjacent
+    if ! @adjacent
+      @adjacent = []
+      product_operands = []
+      ( @components.count - 1 ).times do 
+       product_operands << [-1,0,1]
+      end
+      cartesian = [-1,0,1].product( *product_operands )
+      cartesian.each do |p|
+        new_components = []
+        @components.each_with_index do |c,index|
+        new_components[index] = c + p[index]
+      end
+      p = PointNd.new( new_components)
+      @adjacent << p if p != self
+      end
+    end
+    @adjacent
+  end
+
+end
+
+
 class Point 
 
   attr_accessor :x, :y
