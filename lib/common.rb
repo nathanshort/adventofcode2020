@@ -166,7 +166,7 @@ class Grid
 
     if args[:io]
       args[:io].each_line.with_index do |line,y|
-       line.chomp.chars.each_with_index do |c,x|
+         line.chomp.chars.each_with_index do |c,x|
          @points[Point.new(x,y)] = c
          @width = (x+1) if @width < (x+1)
        end
@@ -177,6 +177,62 @@ class Grid
   
   def initialize_copy( original )
    @points = original.points.dup
+  end
+
+  # returns a new grid rotated 90deg clockwise.  current grid is untouched
+  def rotate
+    g = Grid.new
+    self.each do |point,v|
+      g[Point.new(point.y,point.x)] = v
+    end
+    (0..g.height - 1).each do |y|
+      ( 0..g.width/2.ceil - 1 ).each do |x|
+        tmp = g[Point.new(x,y)]
+        g[Point.new(x,y)] = g[Point.new(g.width - x - 1, y )]
+        g[Point.new(g.width - x - 1,y)] = tmp
+      end
+    end
+    g
+  end
+
+  # flip around the horizontal center row.  returns a new grid
+  def hflip
+    g = Grid.new
+    self.each do |point,v|
+      g[Point.new( @width - point.x - 1, point.y )] = v 
+    end
+    g
+  end
+
+  # flip around the vertical center row.  returns a new grid
+  def vflip
+    g = Grid.new
+    self.each do |point,v|
+      g[Point.new( point.x, @height - point.y - 1 )] = v 
+    end
+    g
+  end
+
+  # returns edges as array of array of points.  edges are 
+  # returned starting at the top, in clockwise order
+  def edges
+    h = hedges
+    v = vedges
+    [ h[0], v[1], h[1], v[0] ]
+  end
+
+  # vertical edges
+  def vedges
+    [0,@width-1].map do |x|
+      ( 0..@height-1 ).map{ |y| @points[Point.new(x,y)] }
+    end
+  end
+
+  # horizontal edges
+  def hedges
+    [0,@height-1].map do |y|
+      ( 0..@width-1 ).map{ |x| @points[Point.new(x,y)] }
+    end
   end
 
   def show
