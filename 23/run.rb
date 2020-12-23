@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
 
-Node = Struct.new( :value, :next, :prev_by_value ) do
+Node = Struct.new( :value, :next ) do
    # next points to next value clockwise
-   # prev_by_value points to the node with a value 1 less than this
 end
 
 # make circular linked list
@@ -27,16 +26,7 @@ def make_list( values )
       n.next = head
     end
    end
-
-  # now loop the list and assign each node's prev_by_value pointer.  we could 
-  # prob do this inline above, but, doing it lazy for now
-  iter = head
-  while iter.next != head
-    prev_value = ( iter.value > 1 ? iter.value - 1 : values.length )
-    iter.prev_by_value = positions[iter.value - 1]
-    iter = iter.next
-  end
-
+  
  [ head, positions ]
 end
 
