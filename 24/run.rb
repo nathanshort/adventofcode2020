@@ -30,11 +30,9 @@ ARGF.each_line do |line|
 puts "part1: #{flipped_to_black.keys.count}"
 
 def neighbors( point )
-  neighbors = []
-  [ [1,-1,0], [1,0,-1], [0,1,-1], [-1,1,0], [-1,0,1], [0,-1,1] ].each do |offset|
-     neighbors << [point[0]+offset[0], point[1]+offset[1], point[2]+offset[2] ]
+  [ [1,-1,0], [1,0,-1], [0,1,-1], [-1,1,0], [-1,0,1], [0,-1,1] ].map do |offset|
+     [point[0]+offset[0], point[1]+offset[1], point[2]+offset[2] ]
   end
-  neighbors
 end
 
 100.times do
