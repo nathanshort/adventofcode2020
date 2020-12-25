@@ -19,9 +19,7 @@ def transform( subject, loop_size )
     value
 end
 
-card_pub = 14205034
-door_pub = 18047856
-
+card_pub, door_pub = 14205034, 18047856
 door_loop = determine_loop_size( door_pub )
 card_loop = determine_loop_size( card_pub )
 
